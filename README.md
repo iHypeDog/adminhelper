@@ -11,13 +11,15 @@ Sistema web de gerenciamento de contadores e relatórios, convertido do bot Disc
 - **Interface moderna** com Bootstrap 5 e Font Awesome
 - **Notificações toast** para feedback imediato
 - **Responsivo** para desktop e mobile
+- **Deploy no Netlify** com Netlify Functions
 
 ## 📋 Pré-requisitos
 
-- Node.js (versão 14 ou superior)
+- Node.js (versão 18 ou superior)
 - npm ou yarn
+- Conta no Netlify (para deploy)
 
-## 🛠️ Instalação
+## 🛠️ Instalação Local
 
 1. Clone o repositório:
 ```bash
@@ -30,43 +32,68 @@ cd slowtek-counter-app
 npm install
 ```
 
-3. Inicie o servidor:
+3. Inicie o servidor local:
 ```bash
 npm start
 ```
 
-Para desenvolvimento com auto-reload:
+4. Acesse a aplicação em: `http://localhost:3000`
+
+## 🌐 Deploy no Netlify
+
+### Método 1: GitHub + Netlify (Recomendado)
+
+1. **Suba o código para o GitHub**
+2. **Acesse o Netlify** e conecte o repositório
+3. **Configurações de Build:**
+   - **Build command:** `npm run build`
+   - **Publish directory:** `public`
+   - **Functions directory:** `netlify/functions`
+
+### Método 2: Netlify CLI
+
 ```bash
-npm run dev
+# 1. Instalar Netlify CLI
+npm install -g netlify-cli
+
+# 2. Fazer login
+netlify login
+
+# 3. Deploy
+netlify deploy
+
+# 4. Deploy em produção
+netlify deploy --prod
 ```
 
-4. Acesse a aplicação em: `http://localhost:3000`
+### 📋 Configurações do Netlify
+
+| Campo | Valor |
+|-------|--------|
+| **Build command** | `npm run build` |
+| **Publish directory** | `public` |
+| **Functions directory** | `netlify/functions` |
+| **Node version** | `18` |
 
 ## 👤 Login Padrão
 
 **Usuário:** `slowtek`  
 **Senha:** `slowtekadmiro123`
 
-## 📁 Estrutura do Projeto
+## 📁 Estrutura do Projeto (Netlify)
 
 ```
-├── server.js              # Servidor principal
-├── package.json           # Dependências e scripts
+├── netlify.toml            # Configurações do Netlify
+├── netlify/functions/      # Netlify Functions
+│   └── server.js          # Função serverless principal
+├── server.js              # Servidor local (desenvolvimento)
+├── package.json           # Dependências
 ├── views/                 # Templates EJS
-│   ├── login.ejs         # Página de login
-│   ├── dashboard.ejs     # Dashboard principal
-│   ├── reports.ejs       # Página de relatórios
-│   ├── users.ejs         # Gerenciamento de usuários
-│   └── partials/
-│       └── navbar.ejs    # Barra de navegação
-├── public/               # Arquivos estáticos
-│   ├── css/
-│   │   └── style.css     # Estilos customizados
-│   └── js/
-│       ├── dashboard.js  # JavaScript do dashboard
-│       ├── reports.js    # JavaScript dos relatórios
-│       └── users.js      # JavaScript dos usuários
-└── *.json               # Arquivos de dados
+├── public/                # Arquivos estáticos
+│   ├── index.html         # Página de redirecionamento
+│   ├── css/style.css      # Estilos
+│   └── js/                # JavaScript frontend
+└── *.json                 # Arquivos de dados
 ```
 
 ## 🔧 Funcionalidades
@@ -105,6 +132,14 @@ A aplicação utiliza arquivos JSON para persistência:
 - Proteção de rotas com middleware de autenticação
 - Proteção contra exclusão do usuário admin principal
 
+## 🌐 Netlify Functions
+
+A aplicação usa **Netlify Functions** para rodar o servidor Express:
+
+- **Serverless:** Escala automaticamente
+- **Sem servidor:** Não precisa gerenciar infraestrutura
+- **Gratuito:** Até 125.000 execuções/mês
+
 ## 🎨 Interface
 
 - Design moderno com Bootstrap 5
@@ -130,19 +165,40 @@ Esta aplicação web mantém todas as funcionalidades do bot Discord original:
 - ✅ Persistência de dados em arquivos JSON
 - ✅ Interface amigável substituindo comandos Discord
 
-## 🚀 Deploy
+## 🚀 URLs de Exemplo
 
-Para produção, configure:
+Após o deploy no Netlify, sua aplicação estará disponível em:
+- `https://seu-app-name.netlify.app`
+- Domínio customizado (opcional)
 
-1. Variáveis de ambiente para segurança
-2. Banco de dados (opcional, atualmente usa JSON)
-3. HTTPS com certificados SSL
-4. Process manager (PM2)
+## 🛠️ Desenvolvimento
+
+Para desenvolvimento local:
+```bash
+npm run dev  # Servidor com auto-reload
+npm start    # Servidor padrão
+npm run build # Build para produção
+```
 
 ## 📞 Suporte
 
-Para dúvidas ou problemas, entre em contato com a equipe Slowtek.
+Para dúvidas ou problemas:
+1. Verifique os logs do Netlify Functions
+2. Teste localmente primeiro
+3. Entre em contato com a equipe Slowtek
+
+## 🔧 Troubleshooting
+
+### Problema: Função não carrega
+- Verifique se `netlify.toml` está configurado
+- Confirme que `serverless-http` está instalado
+- Veja os logs no painel do Netlify
+
+### Problema: Arquivos não persistem
+- No Netlify, arquivos são efêmeros
+- Para produção, considere usar banco de dados
+- Os dados resetam a cada deploy
 
 ---
 
-**Desenvolvido com ❤️ para Slowtek**
+**Desenvolvido com ❤️ para Slowtek - Otimizado para Netlify! 🚀**

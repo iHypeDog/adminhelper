@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Slowtek Counter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fas fa-tachometer-alt me-2"></i>Painel de Contadores</h2>
+                    <div class="text-muted">
+                        Bem-vindo, <strong><%= user.username %></strong>!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Counter Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="card counter-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-envelope fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Chamados</h5>
+                        <h2 class="counter-value text-primary" id="chamadoCount"><%= counters.chamados %></h2>
+                        <button class="btn btn-primary btn-lg w-100" onclick="incrementCounter('chamado')">
+                            <i class="fas fa-plus me-2"></i>Registrar Chamado
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card counter-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-ticket-alt fa-3x text-success mb-3"></i>
+                        <h5 class="card-title">Tickets</h5>
+                        <h2 class="counter-value text-success" id="ticketCount"><%= counters.tickets %></h2>
+                        <button class="btn btn-success btn-lg w-100" onclick="incrementCounter('ticket')">
+                            <i class="fas fa-plus me-2"></i>Registrar Ticket
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card counter-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-box fa-3x text-warning mb-3"></i>
+                        <h5 class="card-title">Devoluções</h5>
+                        <h2 class="counter-value text-warning" id="devolucaoCount"><%= counters.devolucoes %></h2>
+                        <button class="btn btn-warning btn-lg w-100" onclick="incrementCounter('devolucao')">
+                            <i class="fas fa-plus me-2"></i>Registrar Devolução
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-cogs me-2"></i>Ações Rápidas
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <button class="btn btn-info btn-lg w-100" onclick="showReportModal()">
+                                    <i class="fas fa-file-alt me-2"></i>Registrar Relatório
+                                </button>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <a href="/reports" class="btn btn-secondary btn-lg w-100">
+                                    <i class="fas fa-list me-2"></i>Ver Relatórios
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Totals Summary -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-chart-bar me-2"></i>Resumo Total
+                        </h5>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <span class="stat-number text-primary"><%= counters.chamados %></span>
+                                    <span class="stat-label">Chamados</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <span class="stat-number text-success"><%= counters.tickets %></span>
+                                    <span class="stat-label">Tickets</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <span class="stat-number text-warning"><%= counters.devolucoes %></span>
+                                    <span class="stat-label">Devoluções</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-file-alt me-2"></i>Registrar Relatório de Denúncia
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="reportForm">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="idDenunciado" class="form-label">ID do Denunciado</label>
+                                <input type="text" class="form-control" id="idDenunciado" name="idDenunciado" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nomeTicket" class="form-label">Nome do Ticket</label>
+                                <input type="text" class="form-control" id="nomeTicket" name="nomeTicket" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="motivo" class="form-label">Motivo</label>
+                            <textarea class="form-control" id="motivo" name="motivo" rows="3" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="adv" class="form-label">Quantidade de ADVs</label>
+                                <input type="text" class="form-control" id="adv" name="adv" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="link" class="form-label">Link do Medal</label>
+                                <input type="url" class="form-control" id="link" name="link" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Salvar Relatório
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
