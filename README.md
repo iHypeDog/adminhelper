@@ -77,8 +77,8 @@ netlify deploy --prod
 
 ## 👤 Login Padrão
 
-**Usuário:** `slowtek`  
-**Senha:** `slowtekadmiro123`
+**Usuário:** `secret`  
+**Senha:** `secret`
 
 ## 📁 Estrutura do Projeto (Netlify)
 
