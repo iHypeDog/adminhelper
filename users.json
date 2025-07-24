@@ -1,0 +1,11 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "slowtek",
+      "password": "$2a$10$mwTwM7r46xWfyPToyAfUd.HROuRGQvBNFzWmvaANIIHyCxT1..522",
+      "role": "admin",
+      "createdAt": "2025-07-24T00:05:11.252Z"
+    }
+  ]
+}
